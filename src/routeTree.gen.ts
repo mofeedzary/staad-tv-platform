@@ -9,14 +9,24 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as AdminRouteImport } from './routes/admin'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as SeriesIndexRouteImport } from './routes/series/index'
 import { Route as NewsIndexRouteImport } from './routes/news/index'
 import { Route as MoviesIndexRouteImport } from './routes/movies/index'
 import { Route as MatchesIndexRouteImport } from './routes/matches/index'
 import { Route as ChannelsIndexRouteImport } from './routes/channels/index'
+import { Route as AdminIndexRouteImport } from './routes/admin/index'
 import { Route as ChannelsIdRouteImport } from './routes/channels/$id'
+import { Route as AdminLoginRouteImport } from './routes/admin/login'
+import { Route as AdminImportRouteImport } from './routes/admin/import'
+import { Route as AdminChannelsRouteImport } from './routes/admin/channels'
 
+const AdminRoute = AdminRouteImport.update({
+  id: '/admin',
+  path: '/admin',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
@@ -47,15 +57,40 @@ const ChannelsIndexRoute = ChannelsIndexRouteImport.update({
   path: '/channels/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AdminIndexRoute = AdminIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => AdminRoute,
+} as any)
 const ChannelsIdRoute = ChannelsIdRouteImport.update({
   id: '/channels/$id',
   path: '/channels/$id',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AdminLoginRoute = AdminLoginRouteImport.update({
+  id: '/login',
+  path: '/login',
+  getParentRoute: () => AdminRoute,
+} as any)
+const AdminImportRoute = AdminImportRouteImport.update({
+  id: '/import',
+  path: '/import',
+  getParentRoute: () => AdminRoute,
+} as any)
+const AdminChannelsRoute = AdminChannelsRouteImport.update({
+  id: '/channels',
+  path: '/channels',
+  getParentRoute: () => AdminRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/admin': typeof AdminRouteWithChildren
+  '/admin/channels': typeof AdminChannelsRoute
+  '/admin/import': typeof AdminImportRoute
+  '/admin/login': typeof AdminLoginRoute
   '/channels/$id': typeof ChannelsIdRoute
+  '/admin/': typeof AdminIndexRoute
   '/channels/': typeof ChannelsIndexRoute
   '/matches/': typeof MatchesIndexRoute
   '/movies/': typeof MoviesIndexRoute
@@ -64,7 +99,11 @@ export interface FileRoutesByFullPath {
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/admin/channels': typeof AdminChannelsRoute
+  '/admin/import': typeof AdminImportRoute
+  '/admin/login': typeof AdminLoginRoute
   '/channels/$id': typeof ChannelsIdRoute
+  '/admin': typeof AdminIndexRoute
   '/channels': typeof ChannelsIndexRoute
   '/matches': typeof MatchesIndexRoute
   '/movies': typeof MoviesIndexRoute
@@ -74,7 +113,12 @@ export interface FileRoutesByTo {
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/admin': typeof AdminRouteWithChildren
+  '/admin/channels': typeof AdminChannelsRoute
+  '/admin/import': typeof AdminImportRoute
+  '/admin/login': typeof AdminLoginRoute
   '/channels/$id': typeof ChannelsIdRoute
+  '/admin/': typeof AdminIndexRoute
   '/channels/': typeof ChannelsIndexRoute
   '/matches/': typeof MatchesIndexRoute
   '/movies/': typeof MoviesIndexRoute
@@ -85,7 +129,12 @@ export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
+    | '/admin'
+    | '/admin/channels'
+    | '/admin/import'
+    | '/admin/login'
     | '/channels/$id'
+    | '/admin/'
     | '/channels/'
     | '/matches/'
     | '/movies/'
@@ -94,7 +143,11 @@ export interface FileRouteTypes {
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
+    | '/admin/channels'
+    | '/admin/import'
+    | '/admin/login'
     | '/channels/$id'
+    | '/admin'
     | '/channels'
     | '/matches'
     | '/movies'
@@ -103,7 +156,12 @@ export interface FileRouteTypes {
   id:
     | '__root__'
     | '/'
+    | '/admin'
+    | '/admin/channels'
+    | '/admin/import'
+    | '/admin/login'
     | '/channels/$id'
+    | '/admin/'
     | '/channels/'
     | '/matches/'
     | '/movies/'
@@ -113,6 +171,7 @@ export interface FileRouteTypes {
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AdminRoute: typeof AdminRouteWithChildren
   ChannelsIdRoute: typeof ChannelsIdRoute
   ChannelsIndexRoute: typeof ChannelsIndexRoute
   MatchesIndexRoute: typeof MatchesIndexRoute
@@ -123,6 +182,13 @@ export interface RootRouteChildren {
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/admin': {
+      id: '/admin'
+      path: '/admin'
+      fullPath: '/admin'
+      preLoaderRoute: typeof AdminRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/': {
       id: '/'
       path: '/'
@@ -165,6 +231,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ChannelsIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/admin/': {
+      id: '/admin/'
+      path: '/'
+      fullPath: '/admin/'
+      preLoaderRoute: typeof AdminIndexRouteImport
+      parentRoute: typeof AdminRoute
+    }
     '/channels/$id': {
       id: '/channels/$id'
       path: '/channels/$id'
@@ -172,11 +245,49 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ChannelsIdRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/admin/login': {
+      id: '/admin/login'
+      path: '/login'
+      fullPath: '/admin/login'
+      preLoaderRoute: typeof AdminLoginRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/admin/import': {
+      id: '/admin/import'
+      path: '/import'
+      fullPath: '/admin/import'
+      preLoaderRoute: typeof AdminImportRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/admin/channels': {
+      id: '/admin/channels'
+      path: '/channels'
+      fullPath: '/admin/channels'
+      preLoaderRoute: typeof AdminChannelsRouteImport
+      parentRoute: typeof AdminRoute
+    }
   }
 }
 
+interface AdminRouteChildren {
+  AdminChannelsRoute: typeof AdminChannelsRoute
+  AdminImportRoute: typeof AdminImportRoute
+  AdminLoginRoute: typeof AdminLoginRoute
+  AdminIndexRoute: typeof AdminIndexRoute
+}
+
+const AdminRouteChildren: AdminRouteChildren = {
+  AdminChannelsRoute: AdminChannelsRoute,
+  AdminImportRoute: AdminImportRoute,
+  AdminLoginRoute: AdminLoginRoute,
+  AdminIndexRoute: AdminIndexRoute,
+}
+
+const AdminRouteWithChildren = AdminRoute._addFileChildren(AdminRouteChildren)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AdminRoute: AdminRouteWithChildren,
   ChannelsIdRoute: ChannelsIdRoute,
   ChannelsIndexRoute: ChannelsIndexRoute,
   MatchesIndexRoute: MatchesIndexRoute,
@@ -187,3 +298,13 @@ const rootRouteChildren: RootRouteChildren = {
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
+
+import type { getRouter } from './router.tsx'
+import type { startInstance } from './start.ts'
+declare module '@tanstack/react-start' {
+  interface Register {
+    ssr: true
+    router: Awaited<ReturnType<typeof getRouter>>
+    config: Awaited<ReturnType<typeof startInstance.getOptions>>
+  }
+}
