@@ -41,9 +41,11 @@ function AdminMatchesPage() {
 
   const save = async () => {
     try {
-      const payload = {
+      const payload: any = {
         team1_name: form.team1_name, team1_logo: form.team1_logo || null,
+        team1_score: form.team1_score === "" ? null : Number(form.team1_score),
         team2_name: form.team2_name, team2_logo: form.team2_logo || null,
+        team2_score: form.team2_score === "" ? null : Number(form.team2_score),
         tournament: form.tournament || null,
         match_time: new Date(form.match_time).toISOString(),
         status: form.status,
