@@ -12,4 +12,7 @@ export default defineConfig({
     // nitro/vite builds from this
     server: { entry: "server" },
   },
+  // عند النشر على Render/VPS/Node عام، فعّل المتغير DEPLOY_TARGET=node
+  // (افتراضياً يبقى cloudflare كما يستخدمه Lovable للنشر الداخلي).
+  nitro: process.env.DEPLOY_TARGET === "node" ? { preset: "node-server" } : undefined,
 });
