@@ -57,6 +57,7 @@ function AdminLayout() {
     navigate({ to: "/admin/login" });
   };
 
+  if (isLogin) return <Outlet />;
   if (checking) {
     return <div className="container mx-auto p-12 text-center text-muted-foreground">جاري التحقق من الصلاحيات...</div>;
   }
