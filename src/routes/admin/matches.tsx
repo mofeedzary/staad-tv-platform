@@ -13,14 +13,14 @@ export const Route = createFileRoute("/admin/matches")({
 type MatchStatus = "upcoming" | "live" | "finished";
 interface Form {
   id?: string;
-  team1_name: string; team1_logo: string;
-  team2_name: string; team2_logo: string;
+  team1_name: string; team1_logo: string; team1_score: string;
+  team2_name: string; team2_logo: string; team2_score: string;
   tournament: string;
   match_time: string;
   status: MatchStatus;
   channel_id: string;
 }
-const empty: Form = { team1_name: "", team1_logo: "", team2_name: "", team2_logo: "", tournament: "", match_time: "", status: "upcoming", channel_id: "" };
+const empty: Form = { team1_name: "", team1_logo: "", team1_score: "", team2_name: "", team2_logo: "", team2_score: "", tournament: "", match_time: "", status: "upcoming", channel_id: "" };
 
 const statusLabel: Record<MatchStatus, string> = { upcoming: "قادمة", live: "مباشر", finished: "منتهية" };
 const statusColor: Record<MatchStatus, string> = { upcoming: "bg-blue-500/20 text-blue-400", live: "bg-red-500/20 text-red-400 animate-pulse", finished: "bg-muted text-muted-foreground" };
