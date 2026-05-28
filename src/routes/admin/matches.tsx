@@ -119,6 +119,10 @@ function AdminMatchesPage() {
                 <input placeholder="الفريق الثاني" value={form.team2_name} onChange={(e) => setForm({ ...form, team2_name: e.target.value })} className="rounded-lg border border-input bg-background px-3 py-2 text-sm" />
                 <input placeholder="شعار الفريق الثاني" value={form.team2_logo} onChange={(e) => setForm({ ...form, team2_logo: e.target.value })} className="rounded-lg border border-input bg-background px-3 py-2 text-sm" dir="ltr" />
               </div>
+              <div className="grid grid-cols-2 gap-3">
+                <input type="number" placeholder="نتيجة الفريق الأول" value={form.team1_score} onChange={(e) => setForm({ ...form, team1_score: e.target.value })} className="rounded-lg border border-input bg-background px-3 py-2 text-sm" />
+                <input type="number" placeholder="نتيجة الفريق الثاني" value={form.team2_score} onChange={(e) => setForm({ ...form, team2_score: e.target.value })} className="rounded-lg border border-input bg-background px-3 py-2 text-sm" />
+              </div>
               <input placeholder="البطولة" value={form.tournament} onChange={(e) => setForm({ ...form, tournament: e.target.value })} className="w-full rounded-lg border border-input bg-background px-3 py-2 text-sm" />
               <input type="datetime-local" value={form.match_time} onChange={(e) => setForm({ ...form, match_time: e.target.value })} className="w-full rounded-lg border border-input bg-background px-3 py-2 text-sm" />
               <select value={form.status} onChange={(e) => setForm({ ...form, status: e.target.value as MatchStatus })} className="w-full rounded-lg border border-input bg-background px-3 py-2 text-sm">
