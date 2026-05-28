@@ -18,9 +18,13 @@ import { Route as MatchesIndexRouteImport } from './routes/matches/index'
 import { Route as ChannelsIndexRouteImport } from './routes/channels/index'
 import { Route as AdminIndexRouteImport } from './routes/admin/index'
 import { Route as ChannelsIdRouteImport } from './routes/channels/$id'
+import { Route as AdminSeriesRouteImport } from './routes/admin/series'
+import { Route as AdminMoviesRouteImport } from './routes/admin/movies'
+import { Route as AdminMatchesRouteImport } from './routes/admin/matches'
 import { Route as AdminLoginRouteImport } from './routes/admin/login'
 import { Route as AdminImportRouteImport } from './routes/admin/import'
 import { Route as AdminChannelsRouteImport } from './routes/admin/channels'
+import { Route as AdminCategoriesRouteImport } from './routes/admin/categories'
 
 const AdminRoute = AdminRouteImport.update({
   id: '/admin',
@@ -67,6 +71,21 @@ const ChannelsIdRoute = ChannelsIdRouteImport.update({
   path: '/channels/$id',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AdminSeriesRoute = AdminSeriesRouteImport.update({
+  id: '/series',
+  path: '/series',
+  getParentRoute: () => AdminRoute,
+} as any)
+const AdminMoviesRoute = AdminMoviesRouteImport.update({
+  id: '/movies',
+  path: '/movies',
+  getParentRoute: () => AdminRoute,
+} as any)
+const AdminMatchesRoute = AdminMatchesRouteImport.update({
+  id: '/matches',
+  path: '/matches',
+  getParentRoute: () => AdminRoute,
+} as any)
 const AdminLoginRoute = AdminLoginRouteImport.update({
   id: '/login',
   path: '/login',
@@ -82,13 +101,22 @@ const AdminChannelsRoute = AdminChannelsRouteImport.update({
   path: '/channels',
   getParentRoute: () => AdminRoute,
 } as any)
+const AdminCategoriesRoute = AdminCategoriesRouteImport.update({
+  id: '/categories',
+  path: '/categories',
+  getParentRoute: () => AdminRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/admin': typeof AdminRouteWithChildren
+  '/admin/categories': typeof AdminCategoriesRoute
   '/admin/channels': typeof AdminChannelsRoute
   '/admin/import': typeof AdminImportRoute
   '/admin/login': typeof AdminLoginRoute
+  '/admin/matches': typeof AdminMatchesRoute
+  '/admin/movies': typeof AdminMoviesRoute
+  '/admin/series': typeof AdminSeriesRoute
   '/channels/$id': typeof ChannelsIdRoute
   '/admin/': typeof AdminIndexRoute
   '/channels/': typeof ChannelsIndexRoute
@@ -99,9 +127,13 @@ export interface FileRoutesByFullPath {
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/admin/categories': typeof AdminCategoriesRoute
   '/admin/channels': typeof AdminChannelsRoute
   '/admin/import': typeof AdminImportRoute
   '/admin/login': typeof AdminLoginRoute
+  '/admin/matches': typeof AdminMatchesRoute
+  '/admin/movies': typeof AdminMoviesRoute
+  '/admin/series': typeof AdminSeriesRoute
   '/channels/$id': typeof ChannelsIdRoute
   '/admin': typeof AdminIndexRoute
   '/channels': typeof ChannelsIndexRoute
@@ -114,9 +146,13 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/admin': typeof AdminRouteWithChildren
+  '/admin/categories': typeof AdminCategoriesRoute
   '/admin/channels': typeof AdminChannelsRoute
   '/admin/import': typeof AdminImportRoute
   '/admin/login': typeof AdminLoginRoute
+  '/admin/matches': typeof AdminMatchesRoute
+  '/admin/movies': typeof AdminMoviesRoute
+  '/admin/series': typeof AdminSeriesRoute
   '/channels/$id': typeof ChannelsIdRoute
   '/admin/': typeof AdminIndexRoute
   '/channels/': typeof ChannelsIndexRoute
@@ -130,9 +166,13 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/admin'
+    | '/admin/categories'
     | '/admin/channels'
     | '/admin/import'
     | '/admin/login'
+    | '/admin/matches'
+    | '/admin/movies'
+    | '/admin/series'
     | '/channels/$id'
     | '/admin/'
     | '/channels/'
@@ -143,9 +183,13 @@ export interface FileRouteTypes {
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
+    | '/admin/categories'
     | '/admin/channels'
     | '/admin/import'
     | '/admin/login'
+    | '/admin/matches'
+    | '/admin/movies'
+    | '/admin/series'
     | '/channels/$id'
     | '/admin'
     | '/channels'
@@ -157,9 +201,13 @@ export interface FileRouteTypes {
     | '__root__'
     | '/'
     | '/admin'
+    | '/admin/categories'
     | '/admin/channels'
     | '/admin/import'
     | '/admin/login'
+    | '/admin/matches'
+    | '/admin/movies'
+    | '/admin/series'
     | '/channels/$id'
     | '/admin/'
     | '/channels/'
@@ -245,6 +293,27 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ChannelsIdRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/admin/series': {
+      id: '/admin/series'
+      path: '/series'
+      fullPath: '/admin/series'
+      preLoaderRoute: typeof AdminSeriesRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/admin/movies': {
+      id: '/admin/movies'
+      path: '/movies'
+      fullPath: '/admin/movies'
+      preLoaderRoute: typeof AdminMoviesRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/admin/matches': {
+      id: '/admin/matches'
+      path: '/matches'
+      fullPath: '/admin/matches'
+      preLoaderRoute: typeof AdminMatchesRouteImport
+      parentRoute: typeof AdminRoute
+    }
     '/admin/login': {
       id: '/admin/login'
       path: '/login'
@@ -266,20 +335,35 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminChannelsRouteImport
       parentRoute: typeof AdminRoute
     }
+    '/admin/categories': {
+      id: '/admin/categories'
+      path: '/categories'
+      fullPath: '/admin/categories'
+      preLoaderRoute: typeof AdminCategoriesRouteImport
+      parentRoute: typeof AdminRoute
+    }
   }
 }
 
 interface AdminRouteChildren {
+  AdminCategoriesRoute: typeof AdminCategoriesRoute
   AdminChannelsRoute: typeof AdminChannelsRoute
   AdminImportRoute: typeof AdminImportRoute
   AdminLoginRoute: typeof AdminLoginRoute
+  AdminMatchesRoute: typeof AdminMatchesRoute
+  AdminMoviesRoute: typeof AdminMoviesRoute
+  AdminSeriesRoute: typeof AdminSeriesRoute
   AdminIndexRoute: typeof AdminIndexRoute
 }
 
 const AdminRouteChildren: AdminRouteChildren = {
+  AdminCategoriesRoute: AdminCategoriesRoute,
   AdminChannelsRoute: AdminChannelsRoute,
   AdminImportRoute: AdminImportRoute,
   AdminLoginRoute: AdminLoginRoute,
+  AdminMatchesRoute: AdminMatchesRoute,
+  AdminMoviesRoute: AdminMoviesRoute,
+  AdminSeriesRoute: AdminSeriesRoute,
   AdminIndexRoute: AdminIndexRoute,
 }
 
@@ -298,3 +382,13 @@ const rootRouteChildren: RootRouteChildren = {
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
+
+import type { getRouter } from './router.tsx'
+import type { startInstance } from './start.ts'
+declare module '@tanstack/react-start' {
+  interface Register {
+    ssr: true
+    router: Awaited<ReturnType<typeof getRouter>>
+    config: Awaited<ReturnType<typeof startInstance.getOptions>>
+  }
+}

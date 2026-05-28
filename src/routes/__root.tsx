@@ -10,6 +10,7 @@ import {
 
 import appCss from "../styles.css?url";
 import { SiteHeader } from "@/components/SiteHeader";
+import { Toaster } from "sonner";
 
 function NotFoundComponent() {
   return (
@@ -94,6 +95,7 @@ function RootComponent() {
           © {new Date().getFullYear()} ستاد TV — جميع الحقوق محفوظة
         </footer>
       </div>
+      <Toaster position="top-center" theme="dark" richColors />
     </QueryClientProvider>
   );
 }
