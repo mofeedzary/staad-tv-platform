@@ -14,16 +14,248 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      categories: {
+        Row: {
+          created_at: string
+          icon: string | null
+          id: string
+          name: string
+          slug: string
+          sort_order: number
+          visible: boolean
+        }
+        Insert: {
+          created_at?: string
+          icon?: string | null
+          id?: string
+          name: string
+          slug: string
+          sort_order?: number
+          visible?: boolean
+        }
+        Update: {
+          created_at?: string
+          icon?: string | null
+          id?: string
+          name?: string
+          slug?: string
+          sort_order?: number
+          visible?: boolean
+        }
+        Relationships: []
+      }
+      channels: {
+        Row: {
+          backup_urls: Json
+          category_slug: string | null
+          created_at: string
+          enabled: boolean
+          id: string
+          logo: string | null
+          name: string
+          stream_url: string
+        }
+        Insert: {
+          backup_urls?: Json
+          category_slug?: string | null
+          created_at?: string
+          enabled?: boolean
+          id?: string
+          logo?: string | null
+          name: string
+          stream_url: string
+        }
+        Update: {
+          backup_urls?: Json
+          category_slug?: string | null
+          created_at?: string
+          enabled?: boolean
+          id?: string
+          logo?: string | null
+          name?: string
+          stream_url?: string
+        }
+        Relationships: []
+      }
+      episodes: {
+        Row: {
+          created_at: string
+          episode_number: number
+          id: string
+          season: number
+          series_id: string
+          stream_url: string
+          title: string
+        }
+        Insert: {
+          created_at?: string
+          episode_number?: number
+          id?: string
+          season?: number
+          series_id: string
+          stream_url: string
+          title: string
+        }
+        Update: {
+          created_at?: string
+          episode_number?: number
+          id?: string
+          season?: number
+          series_id?: string
+          stream_url?: string
+          title?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "episodes_series_id_fkey"
+            columns: ["series_id"]
+            isOneToOne: false
+            referencedRelation: "series"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      matches: {
+        Row: {
+          channel_id: string | null
+          created_at: string
+          id: string
+          match_time: string
+          status: Database["public"]["Enums"]["match_status"]
+          team1_logo: string | null
+          team1_name: string
+          team2_logo: string | null
+          team2_name: string
+          tournament: string | null
+        }
+        Insert: {
+          channel_id?: string | null
+          created_at?: string
+          id?: string
+          match_time: string
+          status?: Database["public"]["Enums"]["match_status"]
+          team1_logo?: string | null
+          team1_name: string
+          team2_logo?: string | null
+          team2_name: string
+          tournament?: string | null
+        }
+        Update: {
+          channel_id?: string | null
+          created_at?: string
+          id?: string
+          match_time?: string
+          status?: Database["public"]["Enums"]["match_status"]
+          team1_logo?: string | null
+          team1_name?: string
+          team2_logo?: string | null
+          team2_name?: string
+          tournament?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "matches_channel_id_fkey"
+            columns: ["channel_id"]
+            isOneToOne: false
+            referencedRelation: "channels"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      movies: {
+        Row: {
+          category_slug: string | null
+          created_at: string
+          description: string | null
+          id: string
+          poster: string | null
+          stream_url: string
+          title: string
+        }
+        Insert: {
+          category_slug?: string | null
+          created_at?: string
+          description?: string | null
+          id?: string
+          poster?: string | null
+          stream_url: string
+          title: string
+        }
+        Update: {
+          category_slug?: string | null
+          created_at?: string
+          description?: string | null
+          id?: string
+          poster?: string | null
+          stream_url?: string
+          title?: string
+        }
+        Relationships: []
+      }
+      series: {
+        Row: {
+          category_slug: string | null
+          created_at: string
+          description: string | null
+          id: string
+          poster: string | null
+          title: string
+        }
+        Insert: {
+          category_slug?: string | null
+          created_at?: string
+          description?: string | null
+          id?: string
+          poster?: string | null
+          title: string
+        }
+        Update: {
+          category_slug?: string | null
+          created_at?: string
+          description?: string | null
+          id?: string
+          poster?: string | null
+          title?: string
+        }
+        Relationships: []
+      }
+      user_roles: {
+        Row: {
+          created_at: string
+          id: string
+          role: Database["public"]["Enums"]["app_role"]
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          role?: Database["public"]["Enums"]["app_role"]
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          role?: Database["public"]["Enums"]["app_role"]
+          user_id?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      has_role: {
+        Args: {
+          _role: Database["public"]["Enums"]["app_role"]
+          _user_id: string
+        }
+        Returns: boolean
+      }
     }
     Enums: {
-      [_ in never]: never
+      app_role: "admin" | "user"
+      match_status: "upcoming" | "live" | "finished"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -150,6 +382,9 @@ export type CompositeTypes<
 
 export const Constants = {
   public: {
-    Enums: {},
+    Enums: {
+      app_role: ["admin", "user"],
+      match_status: ["upcoming", "live", "finished"],
+    },
   },
 } as const
