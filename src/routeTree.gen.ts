@@ -10,33 +10,115 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as SeriesIndexRouteImport } from './routes/series/index'
+import { Route as NewsIndexRouteImport } from './routes/news/index'
+import { Route as MoviesIndexRouteImport } from './routes/movies/index'
+import { Route as MatchesIndexRouteImport } from './routes/matches/index'
+import { Route as ChannelsIndexRouteImport } from './routes/channels/index'
+import { Route as ChannelsIdRouteImport } from './routes/channels/$id'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const SeriesIndexRoute = SeriesIndexRouteImport.update({
+  id: '/series/',
+  path: '/series/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const NewsIndexRoute = NewsIndexRouteImport.update({
+  id: '/news/',
+  path: '/news/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const MoviesIndexRoute = MoviesIndexRouteImport.update({
+  id: '/movies/',
+  path: '/movies/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const MatchesIndexRoute = MatchesIndexRouteImport.update({
+  id: '/matches/',
+  path: '/matches/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ChannelsIndexRoute = ChannelsIndexRouteImport.update({
+  id: '/channels/',
+  path: '/channels/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ChannelsIdRoute = ChannelsIdRouteImport.update({
+  id: '/channels/$id',
+  path: '/channels/$id',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/channels/$id': typeof ChannelsIdRoute
+  '/channels/': typeof ChannelsIndexRoute
+  '/matches/': typeof MatchesIndexRoute
+  '/movies/': typeof MoviesIndexRoute
+  '/news/': typeof NewsIndexRoute
+  '/series/': typeof SeriesIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/channels/$id': typeof ChannelsIdRoute
+  '/channels': typeof ChannelsIndexRoute
+  '/matches': typeof MatchesIndexRoute
+  '/movies': typeof MoviesIndexRoute
+  '/news': typeof NewsIndexRoute
+  '/series': typeof SeriesIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/channels/$id': typeof ChannelsIdRoute
+  '/channels/': typeof ChannelsIndexRoute
+  '/matches/': typeof MatchesIndexRoute
+  '/movies/': typeof MoviesIndexRoute
+  '/news/': typeof NewsIndexRoute
+  '/series/': typeof SeriesIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/'
+  fullPaths:
+    | '/'
+    | '/channels/$id'
+    | '/channels/'
+    | '/matches/'
+    | '/movies/'
+    | '/news/'
+    | '/series/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/'
-  id: '__root__' | '/'
+  to:
+    | '/'
+    | '/channels/$id'
+    | '/channels'
+    | '/matches'
+    | '/movies'
+    | '/news'
+    | '/series'
+  id:
+    | '__root__'
+    | '/'
+    | '/channels/$id'
+    | '/channels/'
+    | '/matches/'
+    | '/movies/'
+    | '/news/'
+    | '/series/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  ChannelsIdRoute: typeof ChannelsIdRoute
+  ChannelsIndexRoute: typeof ChannelsIndexRoute
+  MatchesIndexRoute: typeof MatchesIndexRoute
+  MoviesIndexRoute: typeof MoviesIndexRoute
+  NewsIndexRoute: typeof NewsIndexRoute
+  SeriesIndexRoute: typeof SeriesIndexRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -48,12 +130,70 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/series/': {
+      id: '/series/'
+      path: '/series'
+      fullPath: '/series/'
+      preLoaderRoute: typeof SeriesIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/news/': {
+      id: '/news/'
+      path: '/news'
+      fullPath: '/news/'
+      preLoaderRoute: typeof NewsIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/movies/': {
+      id: '/movies/'
+      path: '/movies'
+      fullPath: '/movies/'
+      preLoaderRoute: typeof MoviesIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/matches/': {
+      id: '/matches/'
+      path: '/matches'
+      fullPath: '/matches/'
+      preLoaderRoute: typeof MatchesIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/channels/': {
+      id: '/channels/'
+      path: '/channels'
+      fullPath: '/channels/'
+      preLoaderRoute: typeof ChannelsIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/channels/$id': {
+      id: '/channels/$id'
+      path: '/channels/$id'
+      fullPath: '/channels/$id'
+      preLoaderRoute: typeof ChannelsIdRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  ChannelsIdRoute: ChannelsIdRoute,
+  ChannelsIndexRoute: ChannelsIndexRoute,
+  MatchesIndexRoute: MatchesIndexRoute,
+  MoviesIndexRoute: MoviesIndexRoute,
+  NewsIndexRoute: NewsIndexRoute,
+  SeriesIndexRoute: SeriesIndexRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
+
+import type { getRouter } from './router.tsx'
+import type { startInstance } from './start.ts'
+declare module '@tanstack/react-start' {
+  interface Register {
+    ssr: true
+    router: Awaited<ReturnType<typeof getRouter>>
+    config: Awaited<ReturnType<typeof startInstance.getOptions>>
+  }
+}
