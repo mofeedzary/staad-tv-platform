@@ -1,13 +1,9 @@
-import { createFileRoute, Outlet, Link, redirect, useNavigate } from "@tanstack/react-router";
+import { createFileRoute, Outlet, Link, useNavigate, useLocation } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { LayoutDashboard, Tv, Film, Clapperboard, Trophy, FolderTree, Upload, LogOut } from "lucide-react";
 
 export const Route = createFileRoute("/admin")({
-  beforeLoad: async ({ location }) => {
-    // allow /admin/login through
-    if (location.pathname === "/admin/login") return;
-  },
   component: AdminLayout,
 });
 
