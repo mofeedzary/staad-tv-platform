@@ -13,14 +13,14 @@ export const Route = createFileRoute("/admin/matches")({
 type MatchStatus = "upcoming" | "live" | "finished";
 interface Form {
   id?: string;
-  team1_name: string; team1_logo: string;
-  team2_name: string; team2_logo: string;
+  team1_name: string; team1_logo: string; team1_score: string;
+  team2_name: string; team2_logo: string; team2_score: string;
   tournament: string;
   match_time: string;
   status: MatchStatus;
   channel_id: string;
 }
-const empty: Form = { team1_name: "", team1_logo: "", team2_name: "", team2_logo: "", tournament: "", match_time: "", status: "upcoming", channel_id: "" };
+const empty: Form = { team1_name: "", team1_logo: "", team1_score: "", team2_name: "", team2_logo: "", team2_score: "", tournament: "", match_time: "", status: "upcoming", channel_id: "" };
 
 const statusLabel: Record<MatchStatus, string> = { upcoming: "قادمة", live: "مباشر", finished: "منتهية" };
 const statusColor: Record<MatchStatus, string> = { upcoming: "bg-blue-500/20 text-blue-400", live: "bg-red-500/20 text-red-400 animate-pulse", finished: "bg-muted text-muted-foreground" };
@@ -41,9 +41,11 @@ function AdminMatchesPage() {
 
   const save = async () => {
     try {
-      const payload = {
+      const payload: any = {
         team1_name: form.team1_name, team1_logo: form.team1_logo || null,
+        team1_score: form.team1_score === "" ? null : Number(form.team1_score),
         team2_name: form.team2_name, team2_logo: form.team2_logo || null,
+        team2_score: form.team2_score === "" ? null : Number(form.team2_score),
         tournament: form.tournament || null,
         match_time: new Date(form.match_time).toISOString(),
         status: form.status,
@@ -86,7 +88,9 @@ function AdminMatchesPage() {
             <div className="flex flex-1 items-center gap-3">
               {m.team1_logo && <img src={m.team1_logo} alt="" className="h-10 w-10 rounded-full object-contain" />}
               <span className="font-semibold">{m.team1_name}</span>
-              <span className="text-muted-foreground">VS</span>
+              <span className="rounded bg-background px-2 py-0.5 text-sm font-black tabular-nums">
+                {(m as any).team1_score ?? "-"} : {(m as any).team2_score ?? "-"}
+              </span>
               <span className="font-semibold">{m.team2_name}</span>
               {m.team2_logo && <img src={m.team2_logo} alt="" className="h-10 w-10 rounded-full object-contain" />}
             </div>
@@ -95,7 +99,7 @@ function AdminMatchesPage() {
             <select value={m.status} onChange={(e) => changeStatus(m.id, e.target.value as MatchStatus)} className={`rounded-full px-3 py-1 text-xs font-bold ${statusColor[m.status as MatchStatus]}`}>
               {(["upcoming", "live", "finished"] as MatchStatus[]).map((s) => <option key={s} value={s}>{statusLabel[s]}</option>)}
             </select>
-            <button onClick={() => { setForm({ id: m.id, team1_name: m.team1_name, team1_logo: m.team1_logo ?? "", team2_name: m.team2_name, team2_logo: m.team2_logo ?? "", tournament: m.tournament ?? "", match_time: new Date(m.match_time).toISOString().slice(0, 16), status: m.status as MatchStatus, channel_id: m.channel_id ?? "" }); setOpen(true); }} className="rounded p-1.5 hover:bg-background"><Edit2 className="h-4 w-4" /></button>
+            <button onClick={() => { const ma = m as any; setForm({ id: m.id, team1_name: m.team1_name, team1_logo: m.team1_logo ?? "", team1_score: ma.team1_score?.toString() ?? "", team2_name: m.team2_name, team2_logo: m.team2_logo ?? "", team2_score: ma.team2_score?.toString() ?? "", tournament: m.tournament ?? "", match_time: new Date(m.match_time).toISOString().slice(0, 16), status: m.status as MatchStatus, channel_id: m.channel_id ?? "" }); setOpen(true); }} className="rounded p-1.5 hover:bg-background"><Edit2 className="h-4 w-4" /></button>
             <button onClick={() => remove(m.id)} className="rounded p-1.5 text-destructive hover:bg-background"><Trash2 className="h-4 w-4" /></button>
           </div>
         ))}
@@ -114,6 +118,10 @@ function AdminMatchesPage() {
                 <input placeholder="شعار الفريق الأول" value={form.team1_logo} onChange={(e) => setForm({ ...form, team1_logo: e.target.value })} className="rounded-lg border border-input bg-background px-3 py-2 text-sm" dir="ltr" />
                 <input placeholder="الفريق الثاني" value={form.team2_name} onChange={(e) => setForm({ ...form, team2_name: e.target.value })} className="rounded-lg border border-input bg-background px-3 py-2 text-sm" />
                 <input placeholder="شعار الفريق الثاني" value={form.team2_logo} onChange={(e) => setForm({ ...form, team2_logo: e.target.value })} className="rounded-lg border border-input bg-background px-3 py-2 text-sm" dir="ltr" />
+              </div>
+              <div className="grid grid-cols-2 gap-3">
+                <input type="number" placeholder="نتيجة الفريق الأول" value={form.team1_score} onChange={(e) => setForm({ ...form, team1_score: e.target.value })} className="rounded-lg border border-input bg-background px-3 py-2 text-sm" />
+                <input type="number" placeholder="نتيجة الفريق الثاني" value={form.team2_score} onChange={(e) => setForm({ ...form, team2_score: e.target.value })} className="rounded-lg border border-input bg-background px-3 py-2 text-sm" />
               </div>
               <input placeholder="البطولة" value={form.tournament} onChange={(e) => setForm({ ...form, tournament: e.target.value })} className="w-full rounded-lg border border-input bg-background px-3 py-2 text-sm" />
               <input type="datetime-local" value={form.match_time} onChange={(e) => setForm({ ...form, match_time: e.target.value })} className="w-full rounded-lg border border-input bg-background px-3 py-2 text-sm" />

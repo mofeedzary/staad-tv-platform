@@ -124,8 +124,10 @@ export type Database = {
           status: Database["public"]["Enums"]["match_status"]
           team1_logo: string | null
           team1_name: string
+          team1_score: number | null
           team2_logo: string | null
           team2_name: string
+          team2_score: number | null
           tournament: string | null
         }
         Insert: {
@@ -136,8 +138,10 @@ export type Database = {
           status?: Database["public"]["Enums"]["match_status"]
           team1_logo?: string | null
           team1_name: string
+          team1_score?: number | null
           team2_logo?: string | null
           team2_name: string
+          team2_score?: number | null
           tournament?: string | null
         }
         Update: {
@@ -148,8 +152,10 @@ export type Database = {
           status?: Database["public"]["Enums"]["match_status"]
           team1_logo?: string | null
           team1_name?: string
+          team1_score?: number | null
           team2_logo?: string | null
           team2_name?: string
+          team2_score?: number | null
           tournament?: string | null
         }
         Relationships: [
