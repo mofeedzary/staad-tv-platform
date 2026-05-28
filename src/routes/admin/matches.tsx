@@ -88,7 +88,9 @@ function AdminMatchesPage() {
             <div className="flex flex-1 items-center gap-3">
               {m.team1_logo && <img src={m.team1_logo} alt="" className="h-10 w-10 rounded-full object-contain" />}
               <span className="font-semibold">{m.team1_name}</span>
-              <span className="text-muted-foreground">VS</span>
+              <span className="rounded bg-background px-2 py-0.5 text-sm font-black tabular-nums">
+                {(m as any).team1_score ?? "-"} : {(m as any).team2_score ?? "-"}
+              </span>
               <span className="font-semibold">{m.team2_name}</span>
               {m.team2_logo && <img src={m.team2_logo} alt="" className="h-10 w-10 rounded-full object-contain" />}
             </div>
@@ -97,7 +99,7 @@ function AdminMatchesPage() {
             <select value={m.status} onChange={(e) => changeStatus(m.id, e.target.value as MatchStatus)} className={`rounded-full px-3 py-1 text-xs font-bold ${statusColor[m.status as MatchStatus]}`}>
               {(["upcoming", "live", "finished"] as MatchStatus[]).map((s) => <option key={s} value={s}>{statusLabel[s]}</option>)}
             </select>
-            <button onClick={() => { setForm({ id: m.id, team1_name: m.team1_name, team1_logo: m.team1_logo ?? "", team2_name: m.team2_name, team2_logo: m.team2_logo ?? "", tournament: m.tournament ?? "", match_time: new Date(m.match_time).toISOString().slice(0, 16), status: m.status as MatchStatus, channel_id: m.channel_id ?? "" }); setOpen(true); }} className="rounded p-1.5 hover:bg-background"><Edit2 className="h-4 w-4" /></button>
+            <button onClick={() => { const ma = m as any; setForm({ id: m.id, team1_name: m.team1_name, team1_logo: m.team1_logo ?? "", team1_score: ma.team1_score?.toString() ?? "", team2_name: m.team2_name, team2_logo: m.team2_logo ?? "", team2_score: ma.team2_score?.toString() ?? "", tournament: m.tournament ?? "", match_time: new Date(m.match_time).toISOString().slice(0, 16), status: m.status as MatchStatus, channel_id: m.channel_id ?? "" }); setOpen(true); }} className="rounded p-1.5 hover:bg-background"><Edit2 className="h-4 w-4" /></button>
             <button onClick={() => remove(m.id)} className="rounded p-1.5 text-destructive hover:bg-background"><Trash2 className="h-4 w-4" /></button>
           </div>
         ))}
