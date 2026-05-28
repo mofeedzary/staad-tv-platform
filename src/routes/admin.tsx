@@ -19,10 +19,13 @@ const adminNav = [
 
 function AdminLayout() {
   const navigate = useNavigate();
+  const location = useLocation();
+  const isLogin = location.pathname.startsWith("/admin/login");
   const [checking, setChecking] = useState(true);
   const [isAdmin, setIsAdmin] = useState(false);
 
   useEffect(() => {
+    if (isLogin) { setChecking(false); return; }
     const check = async () => {
       const { data: { user } } = await supabase.auth.getUser();
       if (!user) {
