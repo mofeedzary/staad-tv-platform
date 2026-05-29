@@ -26,31 +26,37 @@ function AdminLayout() {
 
   useEffect(() => {
     if (isLogin) { setChecking(false); return; }
+    const ALLOWED_ADMIN_EMAIL = "mofeedzary123@gmail.com";
     const check = async () => {
       const { data: { user } } = await supabase.auth.getUser();
-      if (!user) {
+      if (!user || user.email?.toLowerCase() !== ALLOWED_ADMIN_EMAIL) {
+        await supabase.auth.signOut();
         navigate({ to: "/admin/login" });
         return;
       }
       const { data: roles } = await supabase.from("user_roles").select("role").eq("user_id", user.id);
       const admin = roles?.some((r) => r.role === "admin") ?? false;
       if (!admin) {
-        // auto-grant admin to the first signup
-        const { count } = await supabase.from("user_roles").select("*", { count: "exact", head: true });
-        if ((count ?? 0) === 0) {
-          await supabase.from("user_roles").insert({ user_id: user.id, role: "admin" });
-          setIsAdmin(true);
-        } else {
-          navigate({ to: "/admin/login" });
-          return;
-        }
-      } else {
-        setIsAdmin(true);
+        await supabase.auth.signOut();
+        navigate({ to: "/admin/login" });
+        return;
       }
+      setIsAdmin(true);
       setChecking(false);
     };
     check();
-  }, [navigate]);
+
+    // Auto-logout when session ends/expires
+    const { data: sub } = supabase.auth.onAuthStateChange((event) => {
+      if (event === "SIGNED_OUT" || event === "TOKEN_REFRESHED" && !event) {
+        navigate({ to: "/admin/login" });
+      }
+      if (event === "SIGNED_OUT") {
+        setIsAdmin(false);
+      }
+    });
+    return () => sub.subscription.unsubscribe();
+  }, [navigate, isLogin]);
 
   const logout = async () => {
     await supabase.auth.signOut();
