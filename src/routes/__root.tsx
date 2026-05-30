@@ -10,6 +10,7 @@ import {
 
 import appCss from "../styles.css?url";
 import { SiteHeader } from "@/components/SiteHeader";
+import { BackButtonHandler } from "@/components/BackButtonHandler";
 import { Toaster } from "sonner";
 
 function NotFoundComponent() {
@@ -86,6 +87,7 @@ function RootComponent() {
   const { queryClient } = Route.useRouteContext();
   return (
     <QueryClientProvider client={queryClient}>
+      <BackButtonHandler />
       <div className="min-h-screen bg-background text-foreground">
         <SiteHeader />
         <main>
