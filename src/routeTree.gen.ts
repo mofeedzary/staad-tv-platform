@@ -17,9 +17,9 @@ import { Route as MoviesIndexRouteImport } from './routes/movies/index'
 import { Route as MatchesIndexRouteImport } from './routes/matches/index'
 import { Route as ChannelsIndexRouteImport } from './routes/channels/index'
 import { Route as AdminIndexRouteImport } from './routes/admin/index'
-import { Route as ChannelsIdRouteImport } from './routes/channels/$id'
-import { Route as MoviesIdRouteImport } from './routes/movies/$id'
 import { Route as SeriesIdRouteImport } from './routes/series/$id'
+import { Route as MoviesIdRouteImport } from './routes/movies/$id'
+import { Route as ChannelsIdRouteImport } from './routes/channels/$id'
 import { Route as AdminSeriesRouteImport } from './routes/admin/series'
 import { Route as AdminMoviesRouteImport } from './routes/admin/movies'
 import { Route as AdminMatchesRouteImport } from './routes/admin/matches'
@@ -68,9 +68,9 @@ const AdminIndexRoute = AdminIndexRouteImport.update({
   path: '/',
   getParentRoute: () => AdminRoute,
 } as any)
-const ChannelsIdRoute = ChannelsIdRouteImport.update({
-  id: '/channels/$id',
-  path: '/channels/$id',
+const SeriesIdRoute = SeriesIdRouteImport.update({
+  id: '/series/$id',
+  path: '/series/$id',
   getParentRoute: () => rootRouteImport,
 } as any)
 const MoviesIdRoute = MoviesIdRouteImport.update({
@@ -78,9 +78,9 @@ const MoviesIdRoute = MoviesIdRouteImport.update({
   path: '/movies/$id',
   getParentRoute: () => rootRouteImport,
 } as any)
-const SeriesIdRoute = SeriesIdRouteImport.update({
-  id: '/series/$id',
-  path: '/series/$id',
+const ChannelsIdRoute = ChannelsIdRouteImport.update({
+  id: '/channels/$id',
+  path: '/channels/$id',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AdminSeriesRoute = AdminSeriesRouteImport.update({
@@ -312,11 +312,11 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminIndexRouteImport
       parentRoute: typeof AdminRoute
     }
-    '/channels/$id': {
-      id: '/channels/$id'
-      path: '/channels/$id'
-      fullPath: '/channels/$id'
-      preLoaderRoute: typeof ChannelsIdRouteImport
+    '/series/$id': {
+      id: '/series/$id'
+      path: '/series/$id'
+      fullPath: '/series/$id'
+      preLoaderRoute: typeof SeriesIdRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/movies/$id': {
@@ -326,11 +326,11 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof MoviesIdRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/series/$id': {
-      id: '/series/$id'
-      path: '/series/$id'
-      fullPath: '/series/$id'
-      preLoaderRoute: typeof SeriesIdRouteImport
+    '/channels/$id': {
+      id: '/channels/$id'
+      path: '/channels/$id'
+      fullPath: '/channels/$id'
+      preLoaderRoute: typeof ChannelsIdRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/admin/series': {
@@ -380,7 +380,7 @@ declare module '@tanstack/react-router' {
       path: '/categories'
       fullPath: '/admin/categories'
       preLoaderRoute: typeof AdminCategoriesRouteImport
-      parentRoute: typeof rootRouteImport
+      parentRoute: typeof AdminRoute
     }
   }
 }
