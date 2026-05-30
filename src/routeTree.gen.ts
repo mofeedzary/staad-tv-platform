@@ -17,6 +17,8 @@ import { Route as MoviesIndexRouteImport } from './routes/movies/index'
 import { Route as MatchesIndexRouteImport } from './routes/matches/index'
 import { Route as ChannelsIndexRouteImport } from './routes/channels/index'
 import { Route as AdminIndexRouteImport } from './routes/admin/index'
+import { Route as SeriesIdRouteImport } from './routes/series/$id'
+import { Route as MoviesIdRouteImport } from './routes/movies/$id'
 import { Route as ChannelsIdRouteImport } from './routes/channels/$id'
 import { Route as AdminSeriesRouteImport } from './routes/admin/series'
 import { Route as AdminMoviesRouteImport } from './routes/admin/movies'
@@ -65,6 +67,16 @@ const AdminIndexRoute = AdminIndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => AdminRoute,
+} as any)
+const SeriesIdRoute = SeriesIdRouteImport.update({
+  id: '/series/$id',
+  path: '/series/$id',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const MoviesIdRoute = MoviesIdRouteImport.update({
+  id: '/movies/$id',
+  path: '/movies/$id',
+  getParentRoute: () => rootRouteImport,
 } as any)
 const ChannelsIdRoute = ChannelsIdRouteImport.update({
   id: '/channels/$id',
@@ -118,6 +130,8 @@ export interface FileRoutesByFullPath {
   '/admin/movies': typeof AdminMoviesRoute
   '/admin/series': typeof AdminSeriesRoute
   '/channels/$id': typeof ChannelsIdRoute
+  '/movies/$id': typeof MoviesIdRoute
+  '/series/$id': typeof SeriesIdRoute
   '/admin/': typeof AdminIndexRoute
   '/channels/': typeof ChannelsIndexRoute
   '/matches/': typeof MatchesIndexRoute
@@ -135,6 +149,8 @@ export interface FileRoutesByTo {
   '/admin/movies': typeof AdminMoviesRoute
   '/admin/series': typeof AdminSeriesRoute
   '/channels/$id': typeof ChannelsIdRoute
+  '/movies/$id': typeof MoviesIdRoute
+  '/series/$id': typeof SeriesIdRoute
   '/admin': typeof AdminIndexRoute
   '/channels': typeof ChannelsIndexRoute
   '/matches': typeof MatchesIndexRoute
@@ -154,6 +170,8 @@ export interface FileRoutesById {
   '/admin/movies': typeof AdminMoviesRoute
   '/admin/series': typeof AdminSeriesRoute
   '/channels/$id': typeof ChannelsIdRoute
+  '/movies/$id': typeof MoviesIdRoute
+  '/series/$id': typeof SeriesIdRoute
   '/admin/': typeof AdminIndexRoute
   '/channels/': typeof ChannelsIndexRoute
   '/matches/': typeof MatchesIndexRoute
@@ -174,6 +192,8 @@ export interface FileRouteTypes {
     | '/admin/movies'
     | '/admin/series'
     | '/channels/$id'
+    | '/movies/$id'
+    | '/series/$id'
     | '/admin/'
     | '/channels/'
     | '/matches/'
@@ -191,6 +211,8 @@ export interface FileRouteTypes {
     | '/admin/movies'
     | '/admin/series'
     | '/channels/$id'
+    | '/movies/$id'
+    | '/series/$id'
     | '/admin'
     | '/channels'
     | '/matches'
@@ -209,6 +231,8 @@ export interface FileRouteTypes {
     | '/admin/movies'
     | '/admin/series'
     | '/channels/$id'
+    | '/movies/$id'
+    | '/series/$id'
     | '/admin/'
     | '/channels/'
     | '/matches/'
@@ -221,6 +245,8 @@ export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AdminRoute: typeof AdminRouteWithChildren
   ChannelsIdRoute: typeof ChannelsIdRoute
+  MoviesIdRoute: typeof MoviesIdRoute
+  SeriesIdRoute: typeof SeriesIdRoute
   ChannelsIndexRoute: typeof ChannelsIndexRoute
   MatchesIndexRoute: typeof MatchesIndexRoute
   MoviesIndexRoute: typeof MoviesIndexRoute
@@ -285,6 +311,20 @@ declare module '@tanstack/react-router' {
       fullPath: '/admin/'
       preLoaderRoute: typeof AdminIndexRouteImport
       parentRoute: typeof AdminRoute
+    }
+    '/series/$id': {
+      id: '/series/$id'
+      path: '/series/$id'
+      fullPath: '/series/$id'
+      preLoaderRoute: typeof SeriesIdRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/movies/$id': {
+      id: '/movies/$id'
+      path: '/movies/$id'
+      fullPath: '/movies/$id'
+      preLoaderRoute: typeof MoviesIdRouteImport
+      parentRoute: typeof rootRouteImport
     }
     '/channels/$id': {
       id: '/channels/$id'
@@ -373,6 +413,8 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AdminRoute: AdminRouteWithChildren,
   ChannelsIdRoute: ChannelsIdRoute,
+  MoviesIdRoute: MoviesIdRoute,
+  SeriesIdRoute: SeriesIdRoute,
   ChannelsIndexRoute: ChannelsIndexRoute,
   MatchesIndexRoute: MatchesIndexRoute,
   MoviesIndexRoute: MoviesIndexRoute,

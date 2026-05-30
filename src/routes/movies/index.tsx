@@ -1,4 +1,4 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, Link } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { Film } from "lucide-react";
@@ -20,10 +20,15 @@ function MoviesPage() {
       {movies && movies.length > 0 ? (
         <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6">
           {movies.map((m) => (
-            <div key={m.id} className="overflow-hidden rounded-xl border border-border/60 gradient-card shadow-card">
+            <Link
+              key={m.id}
+              to="/movies/$id"
+              params={{ id: m.id }}
+              className="block overflow-hidden rounded-xl border border-border/60 gradient-card shadow-card transition hover:border-primary hover:scale-[1.02]"
+            >
               {m.poster && <img src={m.poster} alt={m.title} className="aspect-[2/3] w-full object-cover" loading="lazy" />}
               <div className="p-3"><div className="line-clamp-1 text-sm font-semibold">{m.title}</div></div>
-            </div>
+            </Link>
           ))}
         </div>
       ) : (
