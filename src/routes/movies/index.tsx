@@ -2,6 +2,7 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { Film } from "lucide-react";
+import { useRealtimeInvalidate } from "@/hooks/useRealtimeInvalidate";
 
 export const Route = createFileRoute("/movies/")({
   head: () => ({ meta: [{ title: "الأفلام — ستاد TV" }] }),
@@ -9,6 +10,7 @@ export const Route = createFileRoute("/movies/")({
 });
 
 function MoviesPage() {
+  useRealtimeInvalidate("movies", [["movies"]]);
   const { data: movies } = useQuery({
     queryKey: ["movies"],
     queryFn: async () => (await supabase.from("movies").select("*").order("created_at", { ascending: false })).data ?? [],
