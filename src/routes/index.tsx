@@ -1,8 +1,7 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
-import { ChannelCard } from "@/components/ChannelCard";
-import { Tv, Trophy, Film, Clapperboard, Newspaper, Baby, PlayCircle, ChevronLeft, Radio, BookOpen } from "lucide-react";
+import { Trophy, Film, Clapperboard, Newspaper, PlayCircle, ChevronLeft, Radio } from "lucide-react";
 import { useEffect, useState } from "react";
 
 export const Route = createFileRoute("/")({
@@ -15,23 +14,11 @@ export const Route = createFileRoute("/")({
   component: HomePage,
 });
 
-const sectionMeta: Record<string, { icon: typeof Tv; gradient: string }> = {
-  channels: { icon: Tv, gradient: "from-blue-500 to-blue-700" },
-  sports: { icon: Trophy, gradient: "from-orange-400 to-orange-600" },
-  news: { icon: Newspaper, gradient: "from-rose-500 to-rose-700" },
-  movies: { icon: Film, gradient: "from-violet-500 to-violet-700" },
-  series: { icon: Clapperboard, gradient: "from-fuchsia-500 to-fuchsia-700" },
-  kids: { icon: Baby, gradient: "from-emerald-400 to-emerald-600" },
-  docs: { icon: BookOpen, gradient: "from-cyan-500 to-cyan-700" },
-};
-
 const quickSections = [
   { label: "المباريات", to: "/matches", icon: Trophy, gradient: "from-[#FF9800] to-[#FF5722]" },
   { label: "القنوات الإخبارية", to: "/news", icon: Newspaper, gradient: "from-[#EF4444] to-[#B91C1C]" },
   { label: "الأفلام", to: "/movies", icon: Film, gradient: "from-[#1565C0] to-[#42A5F5]" },
   { label: "المسلسلات", to: "/series", icon: Clapperboard, gradient: "from-[#7C3AED] to-[#A855F7]" },
-  { label: "القنوات ", to: "/channels", icon: Baby, gradient: "from-[#10B981] to-[#059669]" },
-  { label: "الاقسام", to: "/channels", icon: BookOpen, gradient: "from-[#0891B2] to-[#0E7490]" },
 ] as const;
 
 function useBanners() {
@@ -87,7 +74,6 @@ function BannerSlider() {
   }
 
   const b = banners[i];
-  const Wrapper: any = b.params ? Link : Link;
   return (
     <div className="relative">
       <Link to={b.to as any} params={b.params as any} className="block">
@@ -140,14 +126,6 @@ function HRail<T extends { id: string }>({ title, to, items, render }: { title: 
 }
 
 function HomePage() {
-  const { data: categories } = useQuery({
-    queryKey: ["categories"],
-    queryFn: async () => (await supabase.from("categories").select("*").eq("visible", true).order("sort_order")).data ?? [],
-  });
-  const { data: channels } = useQuery({
-    queryKey: ["channels", "featured"],
-    queryFn: async () => (await supabase.from("channels").select("*").eq("enabled", true).limit(18)).data ?? [],
-  });
   const { data: movies } = useQuery({
     queryKey: ["movies", "home"],
     queryFn: async () => (await supabase.from("movies").select("*").order("created_at", { ascending: false }).limit(12)).data ?? [],
@@ -168,12 +146,12 @@ function HomePage() {
         <BannerSlider />
       </section>
 
-      {/* Quick category cards */}
+      {/* Quick sections */}
       <section className="container mx-auto px-4 pt-6">
         <div className="mb-3 flex items-center justify-between">
           <h2 className="text-lg font-bold md:text-xl">الأقسام</h2>
         </div>
-        <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-6">
+        <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4">
           {quickSections.map((s) => {
             const Icon = s.icon;
             return (
@@ -223,58 +201,6 @@ function HomePage() {
           )}
         />
       )}
-
-      {/* Categories badges */}
-      {categories && categories.length > 0 && (
-        <section className="container mx-auto mt-8 px-4">
-          <div className="mb-3 flex items-center justify-between">
-            <h2 className="text-lg font-bold md:text-xl">تصنيفات القنوات</h2>
-            <Link to="/channels" className="flex items-center gap-1 text-xs font-semibold text-primary hover:underline">
-              عرض الكل <ChevronLeft className="h-3.5 w-3.5" />
-            </Link>
-          </div>
-          <div className="no-scrollbar flex gap-2 overflow-x-auto pb-2">
-            {categories.map((cat) => {
-              const meta = sectionMeta[cat.slug] ?? { icon: Tv, gradient: "from-slate-500 to-slate-700" };
-              const Icon = meta.icon;
-              return (
-                <Link
-                  key={cat.id}
-                  to="/channels"
-                  search={{ category: cat.slug }}
-                  className="press-scale flex shrink-0 items-center gap-2 rounded-full border border-border bg-card px-4 py-2 text-sm font-medium shadow-soft transition hover:border-primary hover:text-primary"
-                >
-                  <Icon className="h-4 w-4 text-primary" />
-                  {cat.name}
-                </Link>
-              );
-            })}
-          </div>
-        </section>
-      )}
-
-      {/* Featured channels */}
-      <section className="container mx-auto mt-8 px-4">
-        <div className="mb-4 flex items-end justify-between">
-          <div>
-            <h2 className="text-lg font-bold md:text-xl">القنوات المميزة</h2>
-            <p className="mt-1 text-xs text-muted-foreground">اختر قناتك وابدأ المشاهدة فوراً</p>
-          </div>
-          <Link to="/channels" className="flex items-center gap-1 text-xs font-semibold text-primary hover:underline">
-            عرض الكل <ChevronLeft className="h-3.5 w-3.5" />
-          </Link>
-        </div>
-        {channels && channels.length > 0 ? (
-          <div className="grid grid-cols-3 gap-3 sm:grid-cols-4 md:grid-cols-6">
-            {channels.map((ch) => (<ChannelCard key={ch.id} channel={ch} />))}
-          </div>
-        ) : (
-          <div className="rounded-2xl border border-dashed border-border bg-card p-12 text-center text-sm text-muted-foreground shadow-soft">
-            <PlayCircle className="mx-auto mb-3 h-10 w-10 opacity-40" />
-            لا توجد قنوات متاحة حالياً
-          </div>
-        )}
-      </section>
 
       {/* Movies rail */}
       <HRail
