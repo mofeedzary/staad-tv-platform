@@ -2,14 +2,15 @@ import { Link } from "@tanstack/react-router";
 import { Tv, Trophy, Film, Clapperboard, Newspaper, Home, ShieldCheck, Bell, Search } from "lucide-react";
 import { useState } from "react";
 
-const navItems = [
+type NavItem = { to: string; label: string; icon: typeof Home; exact?: boolean };
+const navItems: NavItem[] = [
   { to: "/", label: "الرئيسية", icon: Home, exact: true },
   { to: "/channels", label: "القنوات", icon: Tv },
   { to: "/matches", label: "المباريات", icon: Trophy },
   { to: "/movies", label: "الأفلام", icon: Film },
   { to: "/series", label: "المسلسلات", icon: Clapperboard },
   { to: "/news", label: "الأخبار", icon: Newspaper },
-] as const;
+];
 
 export function SiteHeader() {
   const [q, setQ] = useState("");

@@ -1,13 +1,14 @@
 import { Link } from "@tanstack/react-router";
 import { Home, Search, Heart, LayoutGrid, User } from "lucide-react";
 
-const items = [
+type NavItem = { to: string; label: string; icon: typeof Home; exact?: boolean };
+const items: NavItem[] = [
   { to: "/", label: "الرئيسية", icon: Home, exact: true },
   { to: "/channels", label: "التصنيفات", icon: LayoutGrid },
   { to: "/matches", label: "البحث", icon: Search },
   { to: "/series", label: "المفضلة", icon: Heart },
   { to: "/admin/login", label: "حسابي", icon: User },
-] as const;
+];
 
 export function BottomNav() {
   return (
