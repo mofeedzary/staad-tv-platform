@@ -4,8 +4,8 @@ import { Home, Search, Heart, LayoutGrid, User } from "lucide-react";
 const items = [
   { to: "/", label: "الرئيسية", icon: Home, exact: true },
   { to: "/channels", label: "التصنيفات", icon: LayoutGrid, exact: false },
-  { to: "/matches", label: "البحث", icon: Search, exact: false },
-  { to: "/series", label: "المفضلة", icon: Heart, exact: false },
+  { to: "/matches", label: "المباريات", icon: Search, exact: false },    // تغيير الاسم من "البحث" إلى "المباريات"
+  { to: "/series", label: "المسلسلات", icon: Heart, exact: false },      // تغيير الاسم من "المفضلة" إلى "المسلسلات"
   { to: "/admin/login", label: "حسابي", icon: User, exact: false },
 ] as const;
 
