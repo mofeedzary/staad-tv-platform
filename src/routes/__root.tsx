@@ -10,6 +10,7 @@ import {
 
 import appCss from "../styles.css?url";
 import { SiteHeader } from "@/components/SiteHeader";
+import { BottomNav } from "@/components/BottomNav";
 import { BackButtonHandler } from "@/components/BackButtonHandler";
 import { Toaster } from "sonner";
 
@@ -94,12 +95,13 @@ function RootComponent() {
       <BackButtonHandler />
       <div className="min-h-screen bg-background text-foreground">
         <SiteHeader />
-        <main>
+        <main className="pb-20 md:pb-0">
           <Outlet />
         </main>
-        <footer className="border-t border-border/60 py-6 text-center text-xs text-muted-foreground">
+        <footer className="hidden border-t border-border/60 py-6 text-center text-xs text-muted-foreground md:block">
           © {new Date().getFullYear()} ستاد TV — جميع الحقوق محفوظة
         </footer>
+        <BottomNav />
       </div>
       <Toaster position="top-center" theme="dark" richColors />
     </QueryClientProvider>
