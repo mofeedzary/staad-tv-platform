@@ -10,6 +10,7 @@ import {
 
 import appCss from "../styles.css?url";
 import { SiteHeader } from "@/components/SiteHeader";
+import { BottomNav } from "@/components/BottomNav";
 import { BackButtonHandler } from "@/components/BackButtonHandler";
 import { Toaster } from "sonner";
 

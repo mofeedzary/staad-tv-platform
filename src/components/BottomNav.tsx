@@ -1,14 +1,13 @@
 import { Link } from "@tanstack/react-router";
 import { Home, Search, Heart, LayoutGrid, User } from "lucide-react";
 
-type NavItem = { to: string; label: string; icon: typeof Home; exact?: boolean };
-const items: NavItem[] = [
+const items = [
   { to: "/", label: "الرئيسية", icon: Home, exact: true },
-  { to: "/channels", label: "التصنيفات", icon: LayoutGrid },
-  { to: "/matches", label: "البحث", icon: Search },
-  { to: "/series", label: "المفضلة", icon: Heart },
-  { to: "/admin/login", label: "حسابي", icon: User },
-];
+  { to: "/channels", label: "التصنيفات", icon: LayoutGrid, exact: false },
+  { to: "/matches", label: "البحث", icon: Search, exact: false },
+  { to: "/series", label: "المفضلة", icon: Heart, exact: false },
+  { to: "/admin/login", label: "حسابي", icon: User, exact: false },
+] as const;
 
 export function BottomNav() {
   return (
@@ -20,7 +19,7 @@ export function BottomNav() {
             <li key={it.to} className="flex-1">
               <Link
                 to={it.to}
-                activeOptions={{ exact: !!it.exact }}
+                activeOptions={{ exact: it.exact }}
                 className="press-scale flex flex-col items-center gap-0.5 rounded-xl py-1.5 text-[10px] font-medium text-muted-foreground"
                 activeProps={{ className: "press-scale flex flex-col items-center gap-0.5 rounded-xl py-1.5 text-[10px] font-semibold text-primary" }}
               >
