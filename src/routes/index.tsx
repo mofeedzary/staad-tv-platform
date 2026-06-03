@@ -26,11 +26,11 @@ const sectionMeta: Record<string, { icon: typeof Tv; gradient: string }> = {
 };
 
 const quickSections = [
-  { label: "القنوات الرياضية", to: "/matches", icon: Trophy, gradient: "from-[#FF9800] to-[#FF5722]" },
-  { label: "القنوات الإخبارية", to: "/news", icon: Newspaper, gradient: "from-[#EF4444] to-[#B91C1C]" },
+  { label: "القنوات الرياضية", to: "/channels", search: { category: "sports" }, icon: Trophy, gradient: "from-[#FF9800] to-[#FF5722]" },
+  { label: "القنوات الإخبارية", to: "/channels", search: { category: "news" }, icon: Newspaper, gradient: "from-[#EF4444] to-[#B91C1C]" },
   { label: "الأفلام", to: "/movies", icon: Film, gradient: "from-[#1565C0] to-[#42A5F5]" },
   { label: "المسلسلات", to: "/series", icon: Clapperboard, gradient: "from-[#7C3AED] to-[#A855F7]" },
-  { label: "الأطفال", to: "/channels", icon: Baby, gradient: "from-[#10B981] to-[#059669]" },
+  { label: "الأطفال", to: "/channels", search: { category: "kids" }, icon: Baby, gradient: "from-[#10B981] to-[#059669]" },
   { label: "الوثائقيات", to: "/channels", icon: BookOpen, gradient: "from-[#0891B2] to-[#0E7490]" },
 ] as const;
 
@@ -176,10 +176,12 @@ function HomePage() {
         <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-6">
           {quickSections.map((s) => {
             const Icon = s.icon;
+            const linkProps = { to: s.to as any, search: (s as any).search };
             return (
               <Link
                 key={s.label}
-                to={s.to as any}
+                to={linkProps.to}
+                search={linkProps.search}
                 className="press-scale group relative overflow-hidden rounded-3xl p-4 text-white shadow-card transition hover:-translate-y-0.5 hover:shadow-glow"
               >
                 <div className={`absolute inset-0 bg-gradient-to-br ${s.gradient}`} />
