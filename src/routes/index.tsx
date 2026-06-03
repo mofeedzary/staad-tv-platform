@@ -26,12 +26,12 @@ const sectionMeta: Record<string, { icon: typeof Tv; gradient: string }> = {
 };
 
 const quickSections = [
-  { label: "القنوات الرياضية", to: "/matches", icon: Trophy, gradient: "from-[#FF9800] to-[#FF5722]" },
+  { label: "المباريات", to: "/matches", icon: Trophy, gradient: "from-[#FF9800] to-[#FF5722]" },
   { label: "القنوات الإخبارية", to: "/news", icon: Newspaper, gradient: "from-[#EF4444] to-[#B91C1C]" },
   { label: "الأفلام", to: "/movies", icon: Film, gradient: "from-[#1565C0] to-[#42A5F5]" },
   { label: "المسلسلات", to: "/series", icon: Clapperboard, gradient: "from-[#7C3AED] to-[#A855F7]" },
-  { label: "الأطفال", to: "/channels", icon: Baby, gradient: "from-[#10B981] to-[#059669]" },
-  { label: "الوثائقيات", to: "/channels", icon: BookOpen, gradient: "from-[#0891B2] to-[#0E7490]" },
+  { label: "القنوات ", to: "/channels", icon: Baby, gradient: "from-[#10B981] to-[#059669]" },
+  { label: "الاقسام", to: "/channels", icon: BookOpen, gradient: "from-[#0891B2] to-[#0E7490]" },
 ] as const;
 
 function useBanners() {
