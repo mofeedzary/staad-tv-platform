@@ -1,11 +1,11 @@
 import { Link } from "@tanstack/react-router";
-import { Home, Search, Heart, LayoutGrid, User } from "lucide-react";
+import { Home, LayoutGrid, Trophy, Clapperboard, User } from "lucide-react";
 
 const items = [
   { to: "/", label: "الرئيسية", icon: Home, exact: true },
   { to: "/channels", label: "التصنيفات", icon: LayoutGrid, exact: false },
-  { to: "/matches", label: "المباريات", icon: Search, exact: false },    // تغيير الاسم من "البحث" إلى "المباريات"
-  { to: "/series", label: "المسلسلات", icon: Heart, exact: false },      // تغيير الاسم من "المفضلة" إلى "المسلسلات"
+  { to: "/matches", label: "المباريات", icon: Trophy, exact: false },
+  { to: "/series", label: "المسلسلات", icon: Clapperboard, exact: false },
   { to: "/admin/login", label: "حسابي", icon: User, exact: false },
 ] as const;
 
